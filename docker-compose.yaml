@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  app:
+    build: ./app
+    container_name: rentalx-app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    command: "npm run dev"
+    volumes:
+      - ./app:/usr/src/app
+      - nodemodules:/usr/src/app/node_modules
+      - ${HOME}/.gnupg:/root/.gnupg
+    networks:
+      - node-network
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    build: ./.docker/nginx
+    container_name: nginx
+    networks:
+      - node-network
+    ports:
+      - "7000:80"
+    depends_on:
+      - app
+
+  db:
+    build: ./.docker/mysql
+    container_name: rentalx-db
+    restart: always
+    tty: true
+    ports:
+      - "33336:3306"
+    volumes:
+      - ./.docker/dbdata:/var/lib/mysql
+      - ./.docker/mysql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - node-network
+
+  redis:
+    image: redis:alpine
+    container_name: rentalx-redis
+    expose:
+      - 6379
+    networks:
+      - node-network
+
+volumes:
+  nodemodules: {}
+
+networks:
+  node-network:
+    driver: bridge
