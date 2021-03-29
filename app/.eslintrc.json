@@ -17,17 +17,6 @@
   "plugins": ["prettier", "@typescript-eslint"],
   "rules": {
     "camelcase": "off",
-    "@typescript-eslint/naming-convention": [
-      "error",
-      {
-        "selector": "interface",
-        "format": ["PascalCase"],
-        "custom": {
-          "regex": "^I[A-Z]",
-          "match": true
-        }
-      }
-    ],
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
     "no-shadow": "off",
