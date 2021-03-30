@@ -1,9 +1,10 @@
-import { CategoryData } from "../../domain/entities/category/category-data";
+import { Category } from "../../domain/entities/category";
 import { CategoriesRepository } from "../../domain/usecases/ports/category-repository";
 
-const categories: CategoryData[] = [];
+const categories: Category[] = [];
 export class FakeCategoriesRepository implements CategoriesRepository {
-  async create(categoryData: CategoryData): Promise<void> {
-    categories.push(categoryData);
+  async create(category: Category): Promise<Category> {
+    categories.push(category);
+    return category;
   }
 }

@@ -34,7 +34,7 @@ export class CategoriesController implements Controller {
         return badRequest(categoryResponse.value);
       }
 
-      return ok(categoryRequest.body, 201);
+      return ok(CategoryViewModel.map(categoryResponse.value), 201);
     } catch (error) {
       console.log(error);
       return serverError("internal");

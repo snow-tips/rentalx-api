@@ -17,10 +17,7 @@ export class CreateCategory {
     }
 
     const category: Category = categoryOrError.value;
-    await this.categoriesRepository.create({
-      name: category.name.value,
-      description: category.description,
-    });
+    await this.categoriesRepository.create(category);
 
     return right(category);
   }

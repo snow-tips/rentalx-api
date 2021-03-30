@@ -1,16 +1,24 @@
 import { Either, left, right } from "../../../shared/either";
+import { Entity } from "../types/entity";
 import { CategoryData } from "./category-data";
+import { CategoryId } from "./category-id";
 import { InvalidNameError } from "./errors/invalid-name";
 import { Name } from "./name";
 
-export class Category {
+export class Category implements Entity<string> {
+  public readonly id: CategoryId;
   public readonly name: Name;
   public readonly description: string;
 
-  private constructor(name: Name, description: string) {
+  private constructor(categoryId: CategoryId, name: Name, description: string) {
+    this.id = categoryId;
     this.name = name;
     this.description = description;
     Object.freeze(this);
+  }
+
+  getId(): string {
+    return this.id.value;
   }
 
   static create(
@@ -25,6 +33,8 @@ export class Category {
     }
 
     const name: Name = nameOrError.value;
-    return right(new Category(name, categoryData.description));
+    return right(
+      new Category(new CategoryId(), name, categoryData.description)
+    );
   }
 }

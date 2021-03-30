@@ -1,5 +1,4 @@
-import { CategoryData } from "../../entities/category/category-data";
-
+import { Category } from "../../entities/category";
 export interface CategoriesRepository {
-  create: (category: CategoryData) => Promise<void>;
+  create: (category: Category) => Promise<Category>;
 }
